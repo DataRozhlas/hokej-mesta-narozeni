@@ -38,7 +38,8 @@ colorScale = d3.scale.linear!
   ..domain ig.utils.divideToParts valueExtent, 5
   ..range ['rgb(116,169,207)','rgb(54,144,192)','rgb(5,112,176)','rgb(4,90,141)','rgb(2,56,88)']
 
-for city in cities
+
+markers = for city in cities
   count = city.value
   color = colorScale count
   radius = Math.floor radiusScale count
@@ -47,5 +48,15 @@ for city in cities
   icon = L.divIcon do
     html: "<div style='background-color: #color;line-height:#{radius}px'><span>#{ig.utils.formatNumber count}</span></div>"
     iconSize: [radius, radius]
+  list = city.players.map (player) ->
+    plural = switch
+    | player.starts == 1 => "start"
+    | 1 < player.starts < 5 => "starty"
+    | otherwise => "startů"
+    "#{player.name} (#{player.starts} #plural)"
   marker = L.marker latLng, {icon, zIndexOffset}
     ..addTo map
+    ..bindPopup "<h3>#{city.name}</h3>
+      <ul>
+      <li>#{list.join '</li><li>'}</li>
+      </ul>"
