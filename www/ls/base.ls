@@ -26,8 +26,15 @@ ig.map = map
   ..addLayer labelLayer
 
 cities = ig.prepareData!
+isStarts = window.location.hash == '#starty'
 for city in cities
-  city.value = city.players.length
+  city.value = if isStarts
+    city.players.reduce do
+      (prev, curr) ->
+        prev + curr.starts
+      0
+  else
+    city.players.length
 
 valueExtent = d3.extent cities.map (.value)
 radiusScale = d3.scale.sqrt!
