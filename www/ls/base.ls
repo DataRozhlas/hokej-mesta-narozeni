@@ -39,7 +39,7 @@ for city in cities
 valueExtent = d3.extent cities.map (.value)
 radiusScale = d3.scale.sqrt!
   ..domain valueExtent
-  ..range [35 60]
+  ..range [35 80]
 
 colorScale = d3.scale.linear!
   ..domain ig.utils.divideToParts valueExtent, 5
@@ -51,7 +51,7 @@ markers = for city in cities
   color = colorScale count
   radius = Math.floor radiusScale count
   latLng = city.latLng
-  zIndexOffset = (30 - count) * 50
+  zIndexOffset = (count) * 50
   icon = L.divIcon do
     html: "<div style='background-color: #color;line-height:#{radius}px'><span>#{ig.utils.formatNumber count}</span></div>"
     iconSize: [radius, radius]
